@@ -143,17 +143,56 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
-        
-        ProdutosDAO produtosdao = new ProdutosDAO();
-        
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+  int id;
+
+try {
+    id = Integer.parseInt(id_produto_venda.getText().trim());
+
+    if (id <= 0) {
+        throw new NumberFormatException();
+    }
+} catch (NumberFormatException e) {
+    javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Informe um ID inteiro positivo.",
+            "ID inválido",
+            javax.swing.JOptionPane.WARNING_MESSAGE);
+    return;
+}
+
+try {
+    ProdutosDAO produtosdao = new ProdutosDAO();
+    boolean vendido = produtosdao.venderProduto(id);
+
+    if (vendido) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this, "Produto vendido com sucesso!");
+        id_produto_venda.setText("");
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Produto não encontrado ou não está disponível para venda.",
+                "Venda não realizada",
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+    }
+
+    listarProdutos();
+
+} catch (java.sql.SQLException e) {
+    javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Não foi possível confirmar a venda. "
+            + "Verifique a conexão e consulte o status antes de tentar novamente.",
+            "Falha na venda",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+}
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        //vendasVIEW vendas = new vendasVIEW(); 
-        //vendas.setVisible(true);
+
+    vendasVIEW vendas = new vendasVIEW();
+    vendas.setVisible(true);
+
     }//GEN-LAST:event_btnVendasActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
