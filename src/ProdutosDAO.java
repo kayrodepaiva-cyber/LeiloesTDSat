@@ -50,4 +50,30 @@ public boolean venderProduto(int id) throws SQLException {
 
         return prep.executeUpdate() == 1;
     }
+}public ArrayList<ProdutosDTO> listarProdutosVendidos() throws SQLException {
+    ArrayList<ProdutosDTO> produtos = new ArrayList<>();
+
+    String sql = "SELECT id, nome, valor, status FROM produtos "
+            + "WHERE status = ? ORDER BY id";
+
+    try (Connection conn = new conectaDAO().connectDB();
+         PreparedStatement prep = conn.prepareStatement(sql)) {
+
+        prep.setString(1, "Vendido");
+
+        try (ResultSet resultado = prep.executeQuery()) {
+            while (resultado.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+
+                produto.setId(resultado.getInt("id"));
+                produto.setNome(resultado.getString("nome"));
+                produto.setValor(resultado.getInt("valor"));
+                produto.setStatus(resultado.getString("status"));
+
+                produtos.add(produto);
+            }
+        }
+    }
+
+    return produtos;
 }}
