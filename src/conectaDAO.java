@@ -20,7 +20,7 @@ public class conectaDAO {
             }
         }
         String url = config.getProperty("db.url",
-                "jdbc:mysql://localhost:3306/uc11?connectTimeout=5000&socketTimeout=10000");
+        "jdbc:mysql://localhost:3306/uc11?useSSL=false&connectTimeout=5000&socketTimeout=10000");
         String usuario = config.getProperty("db.user", "root");
         String senha = config.getProperty("db.password", "");
         return DriverManager.getConnection(url, usuario, senha);
