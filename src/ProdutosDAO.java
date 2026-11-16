@@ -33,4 +33,21 @@ public class ProdutosDAO {
         }
         return produtos;
     }
-}
+public boolean venderProduto(int id) throws SQLException {
+    if (id <= 0) {
+        throw new IllegalArgumentException("Informe um ID positivo.");
+    }
+
+    String sql = "UPDATE produtos SET status = ? "
+            + "WHERE id = ? AND status = ?";
+
+    try (Connection conn = new conectaDAO().connectDB();
+         PreparedStatement prep = conn.prepareStatement(sql)) {
+
+        prep.setString(1, "Vendido");
+        prep.setInt(2, id);
+        prep.setString(3, "A Venda");
+
+        return prep.executeUpdate() == 1;
+    }
+}}
