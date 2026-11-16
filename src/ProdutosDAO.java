@@ -17,6 +17,20 @@ public class ProdutosDAO {
     }
 
     public ArrayList<ProdutosDTO> listarProdutos() throws SQLException {
-        return new ArrayList<>();
+        ArrayList<ProdutosDTO> produtos = new ArrayList<>();
+        String sql = "SELECT id, nome, valor, status FROM produtos ORDER BY id";
+        try (Connection conn = new conectaDAO().connectDB();
+             PreparedStatement prep = conn.prepareStatement(sql);
+             ResultSet resultado = prep.executeQuery()) {
+            while (resultado.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+                produto.setId(resultado.getInt("id"));
+                produto.setNome(resultado.getString("nome"));
+                produto.setValor(resultado.getInt("valor"));
+                produto.setStatus(resultado.getString("status"));
+                produtos.add(produto);
+            }
+        }
+        return produtos;
     }
 }

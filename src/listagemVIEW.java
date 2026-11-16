@@ -18,6 +18,12 @@ public class listagemVIEW extends javax.swing.JFrame {
      */
     public listagemVIEW() {
         initComponents();
+        listaProdutos.setModel(new DefaultTableModel(
+                new Object[]{"ID", "Nome", "Valor", "Status"}, 0) {
+            @Override public boolean isCellEditable(int linha, int coluna) {
+                return false;
+            }
+        });
         listarProdutos();
     }
 
@@ -218,7 +224,10 @@ public class listagemVIEW extends javax.swing.JFrame {
                     listagem.get(i).getStatus()
                 });
             }
-        } catch (Exception e) {
+        } catch (java.sql.SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Nao foi possivel carregar os produtos. Verifique o banco e a conexao.",
+                    "Falha na consulta", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     
     }
