@@ -145,10 +145,23 @@ public class cadastroVIEW extends javax.swing.JFrame {
         produto.setValor(Integer.parseInt(cadastroValor.getText()));
         produto.setStatus("A Venda");
         try {
-            new ProdutosDAO().cadastrarProduto(produto);
+            boolean salvo = new ProdutosDAO().cadastrarProduto(produto);
+            if (salvo) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                        "Produto cadastrado com sucesso!");
+                cadastroNome.setText("");
+                cadastroValor.setText("");
+                cadastroNome.requestFocusInWindow();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                        "Cadastro nao realizado. Nenhum registro foi inserido.",
+                        "Falha no cadastro", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
         } catch (java.sql.SQLException e) {
-            java.util.logging.Logger.getLogger(cadastroVIEW.class.getName())
-                    .log(java.util.logging.Level.SEVERE, "Falha ao cadastrar produto", e);
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Nao foi possivel confirmar o cadastro. Verifique o banco e a conexao. "
+                    + "Consulte a listagem antes de tentar novamente.",
+                    "Falha no cadastro", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
