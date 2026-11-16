@@ -1,33 +1,28 @@
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
+import java.util.Properties;
 
-
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author Adm
- */
 public class conectaDAO {
-    
-    public Connection connectDB(){
-        Connection conn = null;
-        
-        try {
-        
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/uc11?user=root&password=");
-            
-        } catch (SQLException erro){
-            JOptionPane.showMessageDialog(null, "Erro ConectaDAO" + erro.getMessage());
+    public Connection connectDB() throws SQLException {
+        Properties config = new Properties();
+        Path arquivo = Paths.get("config.properties");
+        if (Files.exists(arquivo)) {
+            try (InputStream entrada = Files.newInputStream(arquivo)) {
+                config.load(entrada);
+            } catch (IOException e) {
+                throw new SQLException("Nao foi possivel ler config.properties.", e);
+            }
         }
-        return conn;
+        String url = config.getProperty("db.url",
+                "jdbc:mysql://localhost:3306/uc11?connectTimeout=5000&socketTimeout=10000");
+        String usuario = config.getProperty("db.user", "root");
+        String senha = config.getProperty("db.password", "");
+        return DriverManager.getConnection(url, usuario, senha);
     }
-    
 }
