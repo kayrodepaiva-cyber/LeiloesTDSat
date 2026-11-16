@@ -140,11 +140,9 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        ProdutosDTO produto = new ProdutosDTO();
-        produto.setNome(cadastroNome.getText());
-        produto.setValor(Integer.parseInt(cadastroValor.getText()));
-        produto.setStatus("A Venda");
         try {
+            ProdutosDTO produto = ValidacaoProduto.criar(
+                    cadastroNome.getText(), cadastroValor.getText());
             boolean salvo = new ProdutosDAO().cadastrarProduto(produto);
             if (salvo) {
                 javax.swing.JOptionPane.showMessageDialog(this,
@@ -157,6 +155,9 @@ public class cadastroVIEW extends javax.swing.JFrame {
                         "Cadastro nao realizado. Nenhum registro foi inserido.",
                         "Falha no cadastro", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
+        } catch (IllegalArgumentException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, e.getMessage(),
+                    "Dados invalidos", javax.swing.JOptionPane.WARNING_MESSAGE);
         } catch (java.sql.SQLException e) {
             javax.swing.JOptionPane.showMessageDialog(this,
                     "Nao foi possivel confirmar o cadastro. Verifique o banco e a conexao. "
