@@ -18,6 +18,7 @@ public class listagemVIEW extends javax.swing.JFrame {
      */
     public listagemVIEW() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         listaProdutos.setModel(new DefaultTableModel(
                 new Object[]{"ID", "Nome", "Valor", "Status"}, 0) {
             @Override public boolean isCellEditable(int linha, int coluna) {
